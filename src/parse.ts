@@ -17,9 +17,6 @@ function pickProperties(object: IObject, paths: string[]) {
 }
 
 
-const ARRAY_SUFFIX = '[0]';
-const EXP_ARRAY_SUFFIX = `.${ARRAY_SUFFIX}`;
-
 interface IQueueItem {
     children: IObject;
     basePath: string;
@@ -55,6 +52,21 @@ const enqueuItem = (queue: IQueueItem[], schema: SchemaLike, config: { basePath:
     return queue;
 }
 
+export const ARRAY_SUFFIX = '[0]';
+export const EXP_ARRAY_SUFFIX = `.${ARRAY_SUFFIX}`;
+/**
+ * 生成新 basePath
+ * @param basePath 当前 basePath
+ * @param keyName 当前 key 值
+ * @param isArray 是否是 array 类型
+ */
+export const genNewBasePath = (basePath: string, keyName: string, isArray?: boolean) =>{
+    if(isArray) {
+        return basePath + EXP_ARRAY_SUFFIX;
+    } else {
+        return basePath + '.' + keyName
+    }
+}
 
 // 生成路径解析
 export const parseSchemaToPaths = (schema: SchemaLike, scopes: string[] = []) => {
@@ -76,12 +88,12 @@ export const parseSchemaToPaths = (schema: SchemaLike, scopes: string[] = []) =>
         if (isArrayType) {
             // 更改 basePath 路径
             enqueuItem(queue, currentSchema as SchemaLike, {
-                basePath: basePath + EXP_ARRAY_SUFFIX
+                basePath: genNewBasePath(basePath, '', true)
             });
         } else {
             Object.keys(currentSchema).forEach((keyName: string) => {
                 // 更改 basePath 路径
-                const newBasePath = basePath + '.' + keyName;
+                const newBasePath = genNewBasePath(basePath, keyName);
 
                 // 生成路径信息
                 resultPaths[newBasePath] = { path: newBasePath, ...pickProperties(currentSchema[keyName], scopes) };
