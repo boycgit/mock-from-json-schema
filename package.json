@@ -25,7 +25,7 @@
     "build": "npm run quick-build && npm run small-build",
     "rollup": "./node_modules/.bin/rollup --config rollup.config.production.js",
     "watch": "tsc -w",
-    "test": "./node_modules/.bin/jest && npm run size",
+    "test": "./node_modules/.bin/jest",
     "doc": "./node_modules/.bin/typedoc --out ./out --target ES5",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w -r 0",
     "release": "standard-version"

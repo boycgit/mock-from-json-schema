@@ -1,6 +1,6 @@
 import { mock, SchemaLike } from '../src/index';
 
-describe('mock', () => {
+describe('mock 函数测试', () => {
   describe('null', () => {
     test('null primitive', () => {
       const schema: SchemaLike = {
